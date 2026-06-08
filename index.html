@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>苏伟航 | 18岁建筑学大一生</title>
+  <style>
+    :root {
+      --ink: #172033;
+      --muted: #5d667a;
+      --line: rgba(23, 32, 51, 0.12);
+      --panel: rgba(255, 255, 255, 0.78);
+      --blue: #2e7df6;
+      --teal: #00a99d;
+      --coral: #ff6b5f;
+      --gold: #f5b642;
+      --green: #35a853;
+      --shadow: 0 24px 70px rgba(31, 45, 78, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: "Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      background:
+        radial-gradient(circle at 12% 14%, rgba(0, 169, 157, 0.18), transparent 28%),
+        radial-gradient(circle at 88% 18%, rgba(255, 107, 95, 0.16), transparent 26%),
+        linear-gradient(135deg, #f7fbff 0%, #fff8f1 45%, #f5fffb 100%);
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .scene {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+    }
+
+    .cursor-light {
+      position: fixed;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(46, 125, 246, 0.18), transparent 68%);
+      transform: translate(-50%, -50%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .wrap {
+      width: min(1140px, calc(100% - 36px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.64);
+      backdrop-filter: blur(18px);
+      background: rgba(250, 253, 255, 0.74);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 72px;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      font-weight: 800;
+    }
+
+    .mark {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border-radius: 8px;
+      color: white;
+      background: conic-gradient(from 140deg, var(--blue), var(--teal), var(--gold), var(--coral), var(--blue));
+      box-shadow: 0 12px 28px rgba(46, 125, 246, 0.22);
+    }
+
+    .navlinks {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.62);
+    }
+
+    .navlinks a {
+      padding: 9px 14px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 14px;
+      transition: color 180ms ease, background 180ms ease;
+    }
+
+    .navlinks a:hover {
+      color: var(--ink);
+      background: white;
+    }
+
+    .hero {
+      min-height: calc(100vh - 72px);
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+      align-items: center;
+      gap: 42px;
+      padding: 58px 0 82px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 18px;
+      padding: 7px 12px;
+      border: 1px solid rgba(0, 169, 157, 0.22);
+      border-radius: 999px;
+      color: #08796f;
+      background: rgba(255, 255, 255, 0.74);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--teal);
+      box-shadow: 0 0 0 0 rgba(0, 169, 157, 0.4);
+      animation: pulse 1.8s infinite;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 760px;
+      font-size: clamp(46px, 8vw, 92px);
+      line-height: 0.95;
+      letter-spacing: 0;
+    }
+
+    .gradient-text {
+      color: transparent;
+      background: linear-gradient(90deg, #1e4fd8, #009b8f 42%, #f59e0b 78%, #ef5b50);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .lead {
+      max-width: 680px;
+      margin: 24px 0 0;
+      color: var(--muted);
+      font-size: clamp(17px, 2.2vw, 21px);
+      line-height: 1.75;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+      color: var(--ink);
+      font-weight: 800;
+      box-shadow: 0 12px 32px rgba(31, 45, 78, 0.08);
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    .btn.primary {
+      border-color: transparent;
+      color: white;
+      background: linear-gradient(135deg, var(--blue), var(--teal));
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 38px rgba(31, 45, 78, 0.14);
+    }
+
+    .portrait {
+      position: relative;
+      min-height: 560px;
+      display: grid;
+      place-items: center;
+    }
+
+    .orbit {
+      position: absolute;
+      inset: 40px 0 0;
+      border: 1px dashed rgba(46, 125, 246, 0.2);
+      border-radius: 50%;
+      animation: spin 24s linear infinite;
+    }
+
+    .profile-card {
+      position: relative;
+      width: min(430px, 100%);
+      padding: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.88);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(20px);
+      transform-style: preserve-3d;
+      transition: transform 160ms ease;
+    }
+
+    .avatar {
+      position: relative;
+      height: 270px;
+      overflow: hidden;
+      border-radius: 8px;
+      background:
+        linear-gradient(145deg, rgba(46, 125, 246, 0.92), rgba(0, 169, 157, 0.88)),
+        repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.16) 0 10px, transparent 10px 22px);
+    }
+
+    .avatar::before {
+      content: "苏";
+      position: absolute;
+      left: 50%;
+      top: 48%;
+      transform: translate(-50%, -50%);
+      color: rgba(255, 255, 255, 0.95);
+      font-size: 132px;
+      font-weight: 900;
+    }
+
+    .avatar::after {
+      content: "建筑学 / 大一 / 嘉兴";
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 18px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      color: white;
+      background: rgba(23, 32, 51, 0.28);
+      backdrop-filter: blur(12px);
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .floating-tag {
+      position: absolute;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.88);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.88);
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 800;
+      box-shadow: 0 14px 34px rgba(31, 45, 78, 0.12);
+      animation: float 4.5s ease-in-out infinite;
+    }
+
+    .floating-tag:nth-child(2) {
+      left: -20px;
+      top: 88px;
+    }
+
+    .floating-tag:nth-child(3) {
+      right: -18px;
+      top: 210px;
+      animation-delay: -1.2s;
+    }
+
+    .floating-tag:nth-child(4) {
+      left: 42px;
+      bottom: 58px;
+      animation-delay: -2.4s;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--coral);
+    }
+
+    .profile-meta {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .metric {
+      padding: 14px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.74);
+    }
+
+    .metric strong {
+      display: block;
+      color: var(--blue);
+      font-size: 22px;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    section {
+      padding: 76px 0;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(30px, 4vw, 46px);
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      max-width: 455px;
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 14px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 18px;
+      padding: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.82);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: 0 16px 42px rgba(31, 45, 78, 0.07);
+    }
+
+    .year {
+      color: var(--teal);
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .step h3,
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 20px;
+    }
+
+    .step p,
+    .card p,
+    .mini span {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .card,
+    .mini {
+      position: relative;
+      overflow: hidden;
+      min-height: 210px;
+      padding: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.84);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: 0 18px 46px rgba(31, 45, 78, 0.08);
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 5px;
+      background: linear-gradient(90deg, var(--blue), var(--teal), var(--gold), var(--coral));
+    }
+
+    .card:hover,
+    .mini:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 24px 62px rgba(31, 45, 78, 0.13);
+    }
+
+    .icon {
+      display: grid;
+      width: 44px;
+      height: 44px;
+      place-items: center;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      background: rgba(46, 125, 246, 0.1);
+      color: var(--blue);
+      font-size: 22px;
+    }
+
+    .life-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .video-panel {
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.86);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.74);
+      box-shadow: var(--shadow);
+    }
+
+    video {
+      display: block;
+      width: 100%;
+      max-height: 620px;
+      border-radius: 8px;
+      background: #101624;
+      object-fit: contain;
+    }
+
+    .mini-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .mini {
+      min-height: auto;
+    }
+
+    .mini strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 18px;
+    }
+
+    .contact {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 28px;
+      padding: 34px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.88);
+      box-shadow: var(--shadow);
+    }
+
+    .contact h2 {
+      margin-bottom: 12px;
+    }
+
+    .contact p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    footer {
+      padding: 28px 0 46px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 520ms ease, transform 520ms ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes pulse {
+      70% {
+        box-shadow: 0 0 0 12px rgba(0, 169, 157, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(0, 169, 157, 0);
+      }
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-12px);
+      }
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .nav {
+        min-height: 64px;
+      }
+
+      .navlinks {
+        display: none;
+      }
+
+      .hero,
+      .life-grid,
+      .contact {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: auto;
+        padding-top: 46px;
+      }
+
+      .portrait {
+        min-height: 460px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        display: block;
+      }
+
+      .section-head p {
+        margin-top: 14px;
+      }
+
+      .step {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .wrap {
+        width: min(100% - 24px, 1140px);
+      }
+
+      .brand span:last-child {
+        font-size: 15px;
+      }
+
+      .profile-card,
+      .contact,
+      .card,
+      .mini,
+      .step {
+        padding: 20px;
+      }
+
+      .avatar {
+        height: 230px;
+      }
+
+      .floating-tag {
+        position: static;
+        width: fit-content;
+        margin-top: 10px;
+        animation: none;
+      }
+
+      .profile-meta {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas class="scene" id="scene"></canvas>
+  <div class="cursor-light" id="cursorLight"></div>
+
+  <header class="topbar">
+    <nav class="nav wrap" aria-label="主导航">
+      <a class="brand" href="#home" aria-label="返回首页">
+        <span class="mark">SW</span>
+        <span>苏伟航 · Architecture Freshman</span>
+      </a>
+      <div class="navlinks">
+        <a href="#about">关于</a>
+        <a href="#skills">标签</a>
+        <a href="#life">生活</a>
+        <a href="#contact">联系</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="home">
+    <section class="hero wrap">
+      <div>
+        <div class="eyebrow"><span class="pulse"></span>外向社牛，建筑学进行时</div>
+        <h1>你好，我是<br><span class="gradient-text">苏伟航</span></h1>
+        <p class="lead">
+          18岁，浙江嘉兴大学建筑学大一学生。高中毕业于太原市外国语学校摄乐校区，性格外向活泼，喜欢和人交流，也愿意把想法落到图纸、空间和真实生活里。
+        </p>
+        <div class="actions">
+          <a class="btn primary" href="#life">看生活片段</a>
+          <a class="btn" href="#about">了解更多</a>
+        </div>
+      </div>
+
+      <div class="portrait" aria-label="个人视觉名片">
+        <div class="orbit"></div>
+        <article class="profile-card" id="tiltCard">
+          <div class="avatar"></div>
+          <span class="floating-tag"><i class="dot"></i>外向活泼</span>
+          <span class="floating-tag"><i class="dot" style="background: var(--gold);"></i>建筑学大一</span>
+          <span class="floating-tag"><i class="dot" style="background: var(--green);"></i>足球与音乐</span>
+          <div class="profile-meta">
+            <div class="metric"><strong>18</strong><span>年龄</span></div>
+            <div class="metric"><strong>嘉兴</strong><span>大学城市</span></div>
+            <div class="metric"><strong>社牛</strong><span>性格关键词</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap reveal" id="about">
+      <div class="section-head">
+        <h2>阳光、会聊，也认真做事。</h2>
+        <p>苏伟航的个人关键词：建筑学、表达力、行动感、热爱运动、热爱游戏，也热爱把日常过得有声有色。</p>
+      </div>
+      <div class="timeline">
+        <article class="step">
+          <div class="year">NOW</div>
+          <div>
+            <h3>浙江嘉兴大学建筑学大一生</h3>
+            <p>正在学习建筑设计、空间表达与基础专业能力，对城市、建筑和人的关系保持好奇。</p>
+          </div>
+        </article>
+        <article class="step">
+          <div class="year">HIGH SCHOOL</div>
+          <div>
+            <h3>太原市外国语学校摄乐校区毕业</h3>
+            <p>高中阶段培养了开放表达和主动交流的习惯，也让他更愿意走出去认识不同的人和事。</p>
+          </div>
+        </article>
+        <article class="step">
+          <div class="year">PERSONALITY</div>
+          <div>
+            <h3>外向活泼，比较社牛</h3>
+            <p>熟人局能带气氛，陌生场也能自然破冰。轻松的性格背后，也有认真、靠谱和愿意承担的一面。</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap reveal" id="skills">
+      <div class="section-head">
+        <h2>他的鲜明标签</h2>
+        <p>专业性不只是安静严肃，也可以是有能量、有节奏、有真实热爱的样子。</p>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <div class="icon">建</div>
+          <h3>建筑学观察力</h3>
+          <p>关注空间比例、结构秩序与人的体验，正在把审美、逻辑和表达训练成专业能力。</p>
+        </article>
+        <article class="card">
+          <div class="icon">唱</div>
+          <h3>喜欢唱歌</h3>
+          <p>音乐是释放状态的方式，也让他的表达更有感染力，生活里自带一点舞台感。</p>
+        </article>
+        <article class="card">
+          <div class="icon">足</div>
+          <h3>热爱足球</h3>
+          <p>喜欢足球里的速度、配合和临场判断，运动场上的活力也延伸到日常协作中。</p>
+        </article>
+        <article class="card">
+          <div class="icon">VAL</div>
+          <h3>无畏契约玩家</h3>
+          <p>享受战术配合和精准操作，喜欢在紧张节奏里保持判断和沟通。</p>
+        </article>
+        <article class="card">
+          <div class="icon">PE</div>
+          <h3>和平精英玩家</h3>
+          <p>喜欢团队协作、信息判断和关键时刻的执行力，主打一个能交流、能配合。</p>
+        </article>
+        <article class="card">
+          <div class="icon">聊</div>
+          <h3>社交启动器</h3>
+          <p>不怯场，不冷场，能快速进入对话，也能让身边的人更放松。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap reveal" id="life">
+      <div class="section-head">
+        <h2>生活片段</h2>
+        <p>用一段视频把苏伟航更真实、更鲜活的一面放进页面：不只是简介里的名字，也是会唱、会玩、会笑的18岁。</p>
+      </div>
+      <div class="life-grid">
+        <div class="mini-list">
+          <article class="mini">
+            <strong>镜头里的苏伟航</strong>
+            <span>视频展示的是更生活化的一面，给个人主页增加真实感和记忆点。</span>
+          </article>
+          <article class="mini">
+            <strong>活泼但不浮躁</strong>
+            <span>页面保留动态粒子、悬浮标签和轻交互，同时用简洁版式保证专业气质。</span>
+          </article>
+          <article class="mini">
+            <strong>兴趣组合</strong>
+            <span>唱歌、足球、无畏契约、和平精英，共同组成一个外向、有能量、爱体验的人。</span>
+          </article>
+        </div>
+        <div class="video-panel">
+          <video controls preload="metadata" playsinline>
+            <source src="assets/suweihang-life.mp4" type="video/mp4" />
+            当前浏览器不支持视频播放。
+          </video>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap reveal" id="contact">
+      <div class="contact">
+        <div>
+          <h2>认识苏伟航</h2>
+          <p>建筑学大一新生，外向、活泼、爱交流，也愿意在专业学习和兴趣生活里持续升级自己。</p>
+        </div>
+        <a class="btn primary" href="mailto:suweihang@example.com">发送邮件</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © 2026 苏伟航. Built with motion, personality and clarity.
+  </footer>
+
+  <script>
+    const canvas = document.getElementById("scene");
+    const ctx = canvas.getContext("2d");
+    const cursorLight = document.getElementById("cursorLight");
+    const tiltCard = document.getElementById("tiltCard");
+    const particles = [];
+    const colors = ["#2e7df6", "#00a99d", "#ff6b5f", "#f5b642", "#35a853"];
+    let width = 0;
+    let height = 0;
+    let pointer = { x: window.innerWidth * 0.5, y: window.innerHeight * 0.45 };
+
+    function resize() {
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * ratio;
+      canvas.height = height * ratio;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      seedParticles();
+    }
+
+    function seedParticles() {
+      particles.length = 0;
+      const count = Math.max(42, Math.floor((width * height) / 24000));
+      for (let i = 0; i < count; i += 1) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.36,
+          vy: (Math.random() - 0.5) * 0.36,
+          size: Math.random() * 3 + 1.4,
+          color: colors[i % colors.length],
+          alpha: Math.random() * 0.35 + 0.18
+        });
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach((p, index) => {
+        const dx = pointer.x - p.x;
+        const dy = pointer.y - p.y;
+        const dist = Math.hypot(dx, dy);
+
+        if (dist < 150) {
+          p.x -= dx * 0.0022;
+          p.y -= dy * 0.0022;
+        }
+
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < -20) p.x = width + 20;
+        if (p.x > width + 20) p.x = -20;
+        if (p.y < -20) p.y = height + 20;
+        if (p.y > height + 20) p.y = -20;
+
+        ctx.beginPath();
+        ctx.fillStyle = hexToRgba(p.color, p.alpha);
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        for (let j = index + 1; j < particles.length; j += 1) {
+          const q = particles[j];
+          const gap = Math.hypot(p.x - q.x, p.y - q.y);
+          if (gap < 115) {
+            ctx.strokeStyle = `rgba(24, 32, 51, ${0.08 * (1 - gap / 115)})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(q.x, q.y);
+            ctx.stroke();
+          }
+        }
+      });
+      requestAnimationFrame(draw);
+    }
+
+    function hexToRgba(hex, alpha) {
+      const value = hex.replace("#", "");
+      const r = parseInt(value.slice(0, 2), 16);
+      const g = parseInt(value.slice(2, 4), 16);
+      const b = parseInt(value.slice(4, 6), 16);
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    window.addEventListener("pointermove", (event) => {
+      pointer = { x: event.clientX, y: event.clientY };
+      cursorLight.style.left = `${event.clientX}px`;
+      cursorLight.style.top = `${event.clientY}px`;
+
+      const rect = tiltCard.getBoundingClientRect();
+      const inside = event.clientX > rect.left && event.clientX < rect.right && event.clientY > rect.top && event.clientY < rect.bottom;
+      if (inside) {
+        const x = (event.clientX - rect.left) / rect.width - 0.5;
+        const y = (event.clientY - rect.top) / rect.height - 0.5;
+        tiltCard.style.transform = `rotateY(${x * 9}deg) rotateX(${-y * 9}deg)`;
+      }
+    });
+
+    tiltCard.addEventListener("pointerleave", () => {
+      tiltCard.style.transform = "rotateY(0deg) rotateX(0deg)";
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add("visible");
+      });
+    }, { threshold: 0.16 });
+
+    document.querySelectorAll(".reveal").forEach((item) => observer.observe(item));
+
+    resize();
+    draw();
+    window.addEventListener("resize", resize);
+  </script>
+</body>
+</html>
