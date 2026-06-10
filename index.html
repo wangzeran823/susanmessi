@@ -511,6 +511,22 @@
       line-height: 1.7;
     }
 
+    .contact-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .contact-phone {
+      color: var(--ink);
+      font-size: 18px;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
     footer {
       padding: 28px 0 46px;
       color: var(--muted);
@@ -783,7 +799,10 @@
           <h2>认识苏伟航</h2>
           <p>建筑学大一新生，外向、活泼、爱交流，也愿意在专业学习和兴趣生活里持续升级自己。</p>
         </div>
-        <a class="btn primary" href="mailto:suweihang@example.com">发送邮件</a>
+        <div class="contact-actions" aria-label="苏伟航的联系方式">
+          <a class="contact-phone" href="tel:15513029097">15513029097</a>
+          <a class="btn primary" href="tel:15513029097">电话联系</a>
+        </div>
       </div>
     </section>
   </main>
